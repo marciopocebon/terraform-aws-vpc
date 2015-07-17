@@ -16,6 +16,14 @@ output "aws_vpc_id" {
 	value = "${aws_vpc.default.id}"
 }
 
+resource "aws_internet_gateway" "default" {
+	vpc_id = "${aws_vpc.default.id}"
+}
+
+output "aws_internet_gateway_id" {
+	value = "${aws_internet_gateway.default.id}"
+}
+
 resource "aws_subnet" "bastion" {
 	vpc_id = "${aws_vpc.default.id}"
 	cidr_block = "${var.network}.0.0/24"
@@ -38,6 +46,29 @@ resource "aws_subnet" "microbosh" {
 
 output "aws_subnet_microbosh_id" {
   value = "${aws_subnet.microbosh.id}"
+}
+
+resource "aws_route_table" "public" {
+	vpc_id = "${aws_vpc.default.id}"
+
+	route {
+		cidr_block = "0.0.0.0/0"
+		gateway_id = "${aws_internet_gateway.default.id}"
+	}
+}
+
+output "aws_route_table_public_id" {
+	value = "${aws_route_table.public.id}"
+}
+
+resource "aws_route_table_association" "bastion-public" {
+	subnet_id = "${aws_subnet.bastion.id}"
+	route_table_id = "${aws_route_table.public.id}"
+}
+
+resource "aws_route_table_association" "bastion-microbosh" {
+	subnet_id = "${aws_subnet.microbosh.id}"
+	route_table_id = "${aws_route_table.public.id}"
 }
 
 resource "aws_security_group" "bastion" {
