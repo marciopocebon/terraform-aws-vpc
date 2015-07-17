@@ -160,11 +160,10 @@ resource "aws_security_group" "microbosh" {
 	}
 
 	ingress {
-		security_group_id = "${aws_subnet.microbosh.id}"
+		source_security_group_id = "${aws_subnet.microbosh.id}"
 		from_port = -1
 		to_port = -1
 		protocol = "-1"
-		type = "ingress"
 	}
 
 	egress {
