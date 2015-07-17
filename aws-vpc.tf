@@ -159,13 +159,6 @@ resource "aws_security_group" "microbosh" {
 		protocol = "icmp"
 	}
 
-	ingress {
-		source_security_group_id = "${aws_subnet.microbosh.id}"
-		from_port = -1
-		to_port = -1
-		protocol = "-1"
-	}
-
 	egress {
 		from_port = 0
 		to_port = 0
@@ -177,6 +170,17 @@ resource "aws_security_group" "microbosh" {
 		Name = "${var.aws_vpc_name}-bosh"
 	}
 
+}
+
+
+resource "aws_security_group_rule" "microbosh" {
+	source_security_group_id = "${aws_subnet.microbosh.id}"
+
+	security_group_id = "${aws_subnet.microbosh.id}"
+	from_port = -1
+	to_port = -1
+	protocol = "-1"
+	type = "ingress"
 }
 
 output "aws_microbosh_sg" {
