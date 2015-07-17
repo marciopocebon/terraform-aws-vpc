@@ -48,6 +48,10 @@ output "aws_subnet_microbosh_id" {
   value = "${aws_subnet.microbosh.id}"
 }
 
+output "aws_subnet_microbosh_prefix" {
+  value = "${var.network}.1"
+}
+
 resource "aws_route_table" "public" {
 	vpc_id = "${aws_vpc.default.id}"
 
