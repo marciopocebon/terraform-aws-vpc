@@ -66,7 +66,7 @@ resource "aws_route_table_association" "bastion-public" {
 	route_table_id = "${aws_route_table.public.id}"
 }
 
-resource "aws_route_table_association" "bastion-microbosh" {
+resource "aws_route_table_association" "microbosh-public" {
 	subnet_id = "${aws_subnet.microbosh.id}"
 	route_table_id = "${aws_route_table.public.id}"
 }
